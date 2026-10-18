@@ -3,6 +3,9 @@
     ViewData["Title"] = "My Exercises";
 }
 <h1>My Exercises</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Exercise</a>
+</p>
 @if (!Model.Any())
 {
     <p>You have no exercises</p>
