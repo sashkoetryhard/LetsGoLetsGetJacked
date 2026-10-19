@@ -17,6 +17,7 @@ else
             <tr>
                 <th>Name</th>
                 <th>Muscle Group</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,9 @@ else
                 <tr>
                     <td>@exercise.Name</td>
                     <td>@exercise.MuscleGroup</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
                 </tr>
             }
         </tbody>
