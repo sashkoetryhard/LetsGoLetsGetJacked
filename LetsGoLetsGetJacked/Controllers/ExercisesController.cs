@@ -2,6 +2,7 @@
 using LetsGoLetsGetJacked.Data;
 using Microsoft.EntityFrameworkCore;
 using LetsGoLetsGetJacked.Models;
+using Microsoft.EntityFrameworkCore.Query;
 namespace LetsGoLetsGetJacked.Controllers
 {
     public class ExercisesController : Controller
@@ -60,6 +61,31 @@ namespace LetsGoLetsGetJacked.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(exercise);
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var exercise = await _context.Exercises.FirstOrDefaultAsync(e => e.Id == id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+            return View(exercise);
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var exercise = await _context.Exercises.FindAsync(id);
+            if (exercise != null)
+            {
+                _context.Exercises.Remove(exercise);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
