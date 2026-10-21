@@ -1,0 +1,31 @@
+﻿@model IEnumerable<LetsGoLetsGetJacked.Models.WorkoutSession>
+@{
+    ViewData["Title"] = "Workout Sessions";
+}
+<h1>Workout Sessions</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create Workout</a>
+</p>
+@if (!Model.Any())
+{
+    <p>You haven't created any workouts yet.</p>
+} else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var workout in Model)
+            {
+                <tr>
+                    <td>@workout.Name</td>
+                    <td>@workout.Date.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
