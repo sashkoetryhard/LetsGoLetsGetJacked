@@ -1,0 +1,40 @@
+﻿@model LetsGoLetsGetJacked.Models.WorkoutSession
+@{
+    ViewData["Title"] = "Workout Details";
+}
+<h1>@Model.Name</h1>
+<p>
+    <strong>Date:</strong> @Model.Date.ToString("dd/MM/yyyy")
+</p>
+<p>
+    <a asp-action="AddSet" asp-route-id="@Model.Id" class="btn btn-primary">Add Set</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Workouts</a>
+</p>
+<h2>Recorded Sets</h2>
+@if (!Model.Sets.Any())
+{
+    <p>No sets have been recorded for this workout yet.</p>
+} else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Exercise</th>
+                <th>Set</th>
+                <th>Weight</th>
+                <th>Reps</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var set in Model.Sets.OrderBy(s => s.SetNumber))
+            {
+                <tr>
+                    <td>@set.Exercise?.Name</td>
+                    <td>@set.SetNumber</td>
+                    <td>@set.Weight</td>
+                    <td>@set.Reps</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

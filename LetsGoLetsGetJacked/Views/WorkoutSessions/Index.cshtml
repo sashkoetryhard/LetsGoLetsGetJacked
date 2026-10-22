@@ -16,6 +16,7 @@
             <tr>
                 <th>Name</th>
                 <th>Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,9 @@
                 <tr>
                     <td>@workout.Name</td>
                     <td>@workout.Date.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@workout.Id" class="btn btn-primary btn-sm">View Workout</a>
+                    </td>
                 </tr>
             }
         </tbody>
