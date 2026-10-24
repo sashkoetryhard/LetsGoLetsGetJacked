@@ -3,8 +3,11 @@ using LetsGoLetsGetJacked.Data;
 using LetsGoLetsGetJacked.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 namespace LetsGoLetsGetJacked.Controllers
 {
+    [Authorize]
     public class WorkoutSessionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,7 +17,8 @@ namespace LetsGoLetsGetJacked.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var workouts = await _context.WorkoutSessions.OrderByDescending(d => d.Date).ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var workouts = await _context.WorkoutSessions.Where(u => u.UserId == userId).OrderByDescending(d => d.Date).ToListAsync();
             return View(workouts);
         }
         public IActionResult Create()
@@ -27,6 +31,7 @@ namespace LetsGoLetsGetJacked.Controllers
         {
             if (ModelState.IsValid)
             {
+                workoutSession.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _context.WorkoutSessions.Add(workoutSession);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -39,7 +44,8 @@ namespace LetsGoLetsGetJacked.Controllers
             {
                 return NotFound();
             }
-            var workout = await _context.WorkoutSessions.Include(s => s.Sets).ThenInclude(e => e.Exercise).FirstOrDefaultAsync(i => i.Id == id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var workout = await _context.WorkoutSessions.Include(s => s.Sets).ThenInclude(e => e.Exercise).FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
             if (workout == null)
             {
                 return NotFound();
